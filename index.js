@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
 app.use(express.json());
+app.use(middleware);
+app.use(logger);
 
 app.get('/', (req, res) => {
     res.send('Hello World');
@@ -62,6 +64,17 @@ app.delete('/courses/:id',(req,res) => {
         res.status(500).send(err);
     }
 })
+
+function middleware(req,res,next){
+    console.log('called');
+    next();
+}
+
+
+function logger(res,req,next){
+    console.log(`Request Method: ${req.method}, Request URL: ${req.url}, Client IP: ${req.ip}`);
+    next();
+}
 
 app.listen(3000, () => {
     console.log('Server started');
